@@ -1,36 +1,27 @@
-import React, { useRef, useState } from 'react'
+import React from 'react'
 import { Animated, Button, StyleSheet, View } from 'react-native'
+import { useAnimation } from '../hooks/useAnimation'
 
 export const Animation101Screen = () => {
 
-  const opacity = useRef(new Animated.Value(0)).current;
-
-  const fadeIn = () => {
-    Animated.timing(opacity, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-      
-    }).start()
-  }
-
-  const fadeOut = () => {
-    Animated.timing(opacity, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true
-    }).start()
-  }
-
+  const {fadeIn, fadeOut, opacity, position, startMovingPosition} = useAnimation()
+  
 
   return (
     <View style={styles.container}>
         <Animated.View style={{
           ...styles.purpleBox,
           marginBottom: 20,
-          opacity: opacity
+          opacity: opacity,
+          transform: [{
+            translateY: position
+          }]
           }}/>
-        <Button title='FadeIn' onPress={fadeIn}/>
+        <Button title='FadeIn' onPress={() => {
+          fadeIn();
+          startMovingPosition(-100, 300)
+          }}
+        />
         <Button title='FadeOut' onPress={fadeOut}/>
     </View>
   )
